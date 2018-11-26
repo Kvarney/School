@@ -1,5 +1,18 @@
 package graphspackage;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class AdjacencyList{
+
+	public AdjacencyList(String fileName) throws IOException{
+		readGraph(fileName);
+	}
+
 	public static void hasEdge(){
 
 	}
@@ -33,7 +46,7 @@ public class AdjacencyList{
 	public static void isFullyConnected(){
 		
 	}
-	public static void readGraph(){
+	public static void readGraph(String fileName)throws FileNotFoundException, IOException{
 		
 	}
 	public static void printGraph(){
