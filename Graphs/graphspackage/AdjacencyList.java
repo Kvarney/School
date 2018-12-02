@@ -59,6 +59,9 @@ public class AdjacencyList{
 	public void isFullyConnected(){
 		
 	}
+	public void printAdjacencyList(){
+		aL.output();
+    }
 	public void readGraph(String fileName)throws FileNotFoundException, IOException{
 		FileReader fr = new FileReader("./Tests/" + fileName);
         BufferedReader br = new BufferedReader(fr);
@@ -108,22 +111,7 @@ public class AdjacencyList{
                     	}
                     }
 
-
-
-                //     //adds initial edges to adjacency matrix set up before functions are called
-                //     while (!(line = br.readLine()).equals("end")) {
-                //         System.err.println(line);
-                //         currentLine = line.split(" ");
-
-                //         fromIndex = getVertexIndex(currentLine[0]);
-                //         toIndex = getVertexIndex(currentLine[1]);
-
-                //         if (weighted == true) {
-                //             addEdge(currentLine[2]);
-                //         } else {
-                //             addEdge();
-                //         }
-                //     }
+                    printAdjacencyList();
 
                 //     printAdjacencyMatrix();
                 // }
@@ -240,13 +228,13 @@ class AList<T>{
 		public T getVertex(){
 			return vertex;
 		}		
-		public T setVertex(T vertex){
+		public void setVertex(T vertex){
 			this.vertex = vertex;
 		}
 		public T getEdge(){
 			return edge;
 		}
-		public T setEdge(T edge){
+		public void setEdge(T edge){
 			this.edge=edge;
 		}
 		public T getWeight(){
@@ -255,17 +243,17 @@ class AList<T>{
 		public void setWeight(T weight){
 			this.weight = weight;
 		}		
-		public Node<T> nextVertex(){
+		public Node<T> getNextVertex(){
 			return nextVertex;
 		}
-		public Node<T> nextEdge(){
+		public Node<T> getNextEdge(){
 			return nextEdge;
 		}
 		public void setNextVertex(Node<T> next){
-			nextVertex = next;
+			this.nextVertex = next;
 		}
 		public void setNextEdge(Node<T> next){
-			nextEdge = next;
+			this.nextEdge = next;
 		}
 	}
 	//List Implementation
@@ -281,16 +269,36 @@ class AList<T>{
 		newNode.setNextVertex(null);
 		newNode.setNextEdge(null);
 
-		if(head.equals(null)){
+		if(head == null){
 			head = newNode;
 		}else{
 			tail.setNextVertex(newNode);
 		}
 
 		tail=newNode;
-		size++;
+	}
+	public void addEdge(T fromVertex, T toVertex, T weight, boolean directed){
+		Node<T> newNode = new Node<>();
+		newNode = head;
 
-		System.out.println("Vertex "+vertex+" added to list.");
+		if(directed == false){
+			while(newNode != null){
+				if(newNode.getVertex().equals(fromVertex)){
+					addEdgeNode(newNode,toVertex,weight);
+				}
+				if(newNode.getVertex().equals(toVertex)){
+					addEdgeNode(newNode,fromVertex,weight);				
+				}
+				newNode = newNode.getNextVertex();
+			}
+		}else{
+			while(newNode != null){
+				if(newNode.getVertex().equals(fromVertex)){
+					addEdgeNode(newNode,toVertex,weight);
+				}
+				newNode = newNode.getNextVertex();
+			}
+		}
 	}
 	public void addEdgeNode(Node<T> currentNode, T vertex, T weight){
 		//building new edge node
@@ -300,85 +308,34 @@ class AList<T>{
 		newNode.setWeight(weight);
 		newNode.setNextVertex(null);
 		newNode.setNextEdge(null);
-		if(currentNode.nextEdge!=null){
-			currentNode.nextEdge = newNode;
-			System.out.println("edge added.");
+		if(currentNode.getNextEdge() == null){
+			currentNode.setNextEdge(newNode);
 		}else{
 			Node<T> temp = new Node<>();
-			temp = currentNode.nextEdge;
-			currentNode.nextEdge = newNode;
-			newNode.setNextEdge(temp.nextEdge);
+			temp = currentNode.getNextEdge();
+			newNode.setNextEdge(temp);
+			currentNode.setNextEdge(newNode);
 		}
 	}
-	public void addEdge(T fromVertex, T toVertex, T weight, T directed){
-		Node<T> newNode = new Node<>();
-		newNode = head;
+	public void output(){
+		Node<T> currentVertex = new Node<>();
+		Node<T> currentEdge = new Node<>();
+		currentVertex = head;
 
-		if(directed == false){
-			while(newNode.nextVertex!=null){
-				if(vertex.equals(fromVertex)){
-					addEdgeNode(newNode,toVertex,weight);
-					System.out.println("Edge from "+fromVertex+" to "+toVertex+" with weight of "+weight);
+		System.err.print("==========================");
+		while(currentVertex != null){
+			System.err.print("\n"+currentVertex.getVertex()+"|");
+			if(currentVertex.getNextEdge() != null){
+				currentEdge = currentVertex.getNextEdge();
+				while(currentEdge != null){
+					System.err.print("["+currentEdge.getEdge()+","+currentEdge.getWeight()+"] ");
+					currentEdge = currentEdge.getNextEdge();
 				}
-				if(vertex.equals(toIndex)){
-					addEdgeNode(newNode,fromVertex,weight);
-					System.out.println("Edge from "+toVertex+" to "+fromVertex+" with weight of "+weight);					
-				}
-				newNode = newNode.nextVertex;
 			}
-		}else{
-			while(newNode.nextVertex!=null){
-				if(vertex.equals(fromVertex)){
-					addEdgeNode(newNode,toVertex,weight);
-					System.out.println("Edge from "+fromVertex+" to "+toVertex+" with weight of "+weight);
-				}
-				newNode = newNode.nextVertex;
-			}
-		}
+			currentVertex = currentVertex.nextVertex;
+		} 
+        System.err.println();
+        System.err.println("==========================");
 	}
-	// public T first(){
-	// 	if(isEmpty()){
-	// 		return null;
-	// 	}
-	// 	return head.getElement();
-	// }
-	// public T last(){
-	// 	if(isEmpty()){
-	// 		return null;
-	// 	}
-	// 	return tail.getElement();
-	// }
-	// public void addFirst(T e){
-	// 	head = new Node<>(e, head);
-	// 	if(size == 0){
-	// 		tail = head;
-	// 	}
-	// 	size++;
-	// 	System.out.println("Added head node with "+head.getElement()+" element.");
-	// }
-	// public void addLast(T e){
-	// 	Node<T> newNode = new Node<>(e, null);
-	// 	if(isEmpty()){
-	// 		head = newNode;
-	// 	}else{
-	// 		tail.setNext(newNode);
-	// 	}
-	// 	tail = newNode;
-	// 	size++;
-	// 	System.out.println("Added tail node with "+ tail.getElement()+" element.");
-	// }
-	// public T removeFirst(){
-	// 	if(isEmpty()){
-	// 		return null;
-	// 	}
-	// 	T answer = head.getElement();
-	// 	head=head.getNext();
-	// 	size--;
-	// 	if(size==0){
-	// 		tail=null;
-	// 	}
-	// 	System.out.println("Removed head node with "+answer+" element.");
-	// 	return answer;
-	// }
 }
 }

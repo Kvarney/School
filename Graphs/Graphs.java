@@ -29,7 +29,7 @@ public class Graphs{
     }
 	public static void main(String[] args){
 		Graphs graphGui = new Graphs();
-		graphGui.fileChooser();		
+        graphGui.fileChooser();		
 	}
 	 private void prepareGui() {
         mainFrame = new JFrame("Menu");
