@@ -234,26 +234,31 @@ class AList<T>{
 		private Node<T> nextVertex;
 		private Node<T> nextEdge;
 
-		public Node(String vertex, String edge, Node<T> next){
-			vertex = vertex;
-			edge = edge;
-			weight = null;
-			if(vertex!="n/a"){
-				nextVertex = next;
-			}else{
-				nextEdge = next;
-			}
+		public Node(){
+
 		}
 		public T getVertex(){
 			return vertex;
+		}		
+		public T setVertex(T vertex){
+			this.vertex = vertex;
 		}
 		public T getEdge(){
 			return edge;
 		}
-		public Node<T> getNextVertex(){
+		public T setEdge(T edge){
+			this.edge=edge;
+		}
+		public T getWeight(){
+			return weight;
+		}
+		public void setWeight(T weight){
+			this.weight = weight;
+		}		
+		public Node<T> nextVertex(){
 			return nextVertex;
 		}
-		public Node<T> getNextEdge(){
+		public Node<T> nextEdge(){
 			return nextEdge;
 		}
 		public void setNextVertex(Node<T> next){
@@ -262,70 +267,75 @@ class AList<T>{
 		public void setNextEdge(Node<T> next){
 			nextEdge = next;
 		}
-		public void setWeight(String weight){
-			weight = weight;
-		}
 	}
-
 	//List Implementation
 	private Node<T> head = null;
 	private Node<T> tail = null;
-	private int size = 0;
-
 	//adds vertex to the end of the list
-	public void addVertexNode(String vertex){
-		Node<T> vertexNode = new Node<>(vertex, "n/a", null);
-		if(isEmpty()){
-			head = vertexNode;
+	public void addVertexNode(T vertex){
+		//building new vertex node
+		Node<T> newNode = new Node<>();
+		newNode.setVertex(vertex);
+		newNode.setEdge(null);
+		newNode.setWeight(null);
+		newNode.setNextVertex(null);
+		newNode.setNextEdge(null);
+
+		if(head.equals(null)){
+			head = newNode;
 		}else{
-			tail.setNextVertex(vertexNode);
+			tail.setNextVertex(newNode);
 		}
-		tail=vertexNode;
+
+		tail=newNode;
 		size++;
 
 		System.out.println("Vertex "+vertex+" added to list.");
 	}
-
-	public void addEdgeNode(String vertex, String weight){
-		Node<T> edgeNode = new Node<>("n/a", vertex, null);
-		while(nextEdge!=null){
-			getNextEdge(nextEdge);
-			// Node<T> cur = new Node<>("n/a", this.edge, nextEdge);
-			// Node<T> temp = new Node<>(nextEdge.getVertex,nextEdge.getNextVertex,nextEdge.getNextEdge)
+	public void addEdgeNode(Node<T> currentNode, T vertex, T weight){
+		//building new edge node
+		Node<T> newNode = new Node<>();
+		newNode.setVertex(null);
+		newNode.setEdge(vertex);
+		newNode.setWeight(weight);
+		newNode.setNextVertex(null);
+		newNode.setNextEdge(null);
+		if(currentNode.nextEdge!=null){
+			currentNode.nextEdge = newNode;
+			System.out.println("edge added.");
+		}else{
+			Node<T> temp = new Node<>();
+			temp = currentNode.nextEdge;
+			currentNode.nextEdge = newNode;
+			newNode.setNextEdge(temp.nextEdge);
 		}
-		nextEdge=edgeNode;
-		weight=weight;		
-
 	}
-	public void addEdge(String fromVertex, String toVertex, String weight, boolean directed){
+	public void addEdge(T fromVertex, T toVertex, T weight, T directed){
+		Node<T> newNode = new Node<>();
+		newNode = head;
+
 		if(directed == false){
-			while(aL.getNextVertex!=null){
-				if(aL.getVertex==fromVertex){
-					aL.addEdgeNode(toVertex, weight);
+			while(newNode.nextVertex!=null){
+				if(vertex.equals(fromVertex)){
+					addEdgeNode(newNode,toVertex,weight);
 					System.out.println("Edge from "+fromVertex+" to "+toVertex+" with weight of "+weight);
 				}
-				if(aL.getVertex==toVertex){
-					aL.addEdgeNode(fromVertex, weight);
+				if(vertex.equals(toIndex)){
+					addEdgeNode(newNode,fromVertex,weight);
 					System.out.println("Edge from "+toVertex+" to "+fromVertex+" with weight of "+weight);					
 				}
+				newNode = newNode.nextVertex;
 			}
 		}else{
-			while(aL.getVertex!=null){
-				if(aL.getNextVertex!=null){
-					aL.addEdgeNode(toVertex, weight);
+			while(newNode.nextVertex!=null){
+				if(vertex.equals(fromVertex)){
+					addEdgeNode(newNode,toVertex,weight);
 					System.out.println("Edge from "+fromVertex+" to "+toVertex+" with weight of "+weight);
 				}
+				newNode = newNode.nextVertex;
 			}
 		}
 	}
-
-	public int size(){
-		return size;
-	}
-	public boolean isEmpty(){
-		return size==0;
-	}
-
 	// public T first(){
 	// 	if(isEmpty()){
 	// 		return null;
