@@ -20,8 +20,8 @@ public class AdjacencyList{
 		readGraph(fileName);
 	}
 
-	public void hasEdge(){
-
+	public boolean hasEdge(String from, String to){
+		return(aL.checkForEdge(from,to));
 	}
 	public void addEdge(String weight){
 		aL.addEdge(fromVertex, toVertex, weight, directed);
@@ -31,33 +31,38 @@ public class AdjacencyList{
 		aL.addEdge(fromVertex, toVertex, "n/a", directed);
 		numberOfEdges++;
 	}
-	public void deleteEdge(){
-
+	public void deleteEdge(String from, String to){
+		aL.removeEdge(from,to);
+		numberOfEdges--;
 	}
 	public void addVertex(String vertex){
 		aL.addVertexNode(vertex);
-
+		numOfVertices++;
 	}
-	public void deleteVertex(){
-		
+	public void deleteVertex(String vertex){
+		// aL.removeVertex(vertex);
+		// numOfVertices--
 	}
-	public void isSparse(){
-		
+	public boolean isSparse(){
+		int maxEdges = ((numOfVertices * (numOfVertices - 1)) / 2);
+        return (numberOfEdges <= (maxEdges * 0.15));		
 	}
-	public void isDense(){
-		
+	public boolean isDense(){
+		int maxEdges = ((numOfVertices * (numOfVertices - 1)) / 2);
+        return (numberOfEdges >= (maxEdges * 0.85));		
 	}
-	public void countVertices(){
-		
+	public int countVertices(){
+		return numberOfEdges;
 	}
-	public void countEdges(){
-		
+	public int countEdges(){
+		return numberOfEdges;
 	}
 	public void isConnected(){
 		
 	}
-	public void isFullyConnected(){
-		
+	public boolean isFullyConnected(){
+		int maxEdges = ((numOfVertices * (numOfVertices - 1)) / 2);
+        return (numberOfEdges == maxEdges);		
 	}
 	public void printAdjacencyList(){
 		aL.output();
@@ -113,74 +118,67 @@ public class AdjacencyList{
 
                     printAdjacencyList();
 
-                //     printAdjacencyMatrix();
-                // }
+                //running functions starts here
+                if (line.equals("end")) {
+                    while ((line = br.readLine()) != null) {
+                        currentLine = line.split(" ");
+                        System.err.println(line);
 
-                // //running functions starts here
-                // if (line.equals("end")) {
-                //     while ((line = br.readLine()) != null) {
-                //         currentLine = line.split(" ");
-                //         System.err.println(line);
+                        if (currentLine[0].equals("hasEdge")) {
+                            if ((hasEdge(currentLine[1], currentLine[2])) == true) {
+                                System.err.println("True");
+                            } else if ((hasEdge(currentLine[1], currentLine[2])) == false) {
+                                System.err.println("False");
+                            } else {
+                                System.err.println("There was an issue with determining if there was an edge.");
+                            }
+                        }
+                        if (currentLine[0].equals("addEdge")) {
+							fromVertex = currentLine[1];
+                    		toVertex = currentLine[2];
 
-                //         if (currentLine[0].equals("hasEdge")) {
-                //             if ((hasEdge(currentLine[1], currentLine[2])) == true) {
-                //                 System.err.println("True");
-                //             } else if ((hasEdge(currentLine[1], currentLine[2])) == false) {
-                //                 System.err.println("False");
-                //             } else {
-                //                 System.err.println("There was an issue with determining if there was an edge.");
-                //             }
-                //         }
-                //         if (currentLine[0].equals("addEdge")) {
-                //             fromIndex = getVertexIndex(currentLine[1]);
-                //             toIndex = getVertexIndex(currentLine[2]);
-                //             if (weighted == false) {
-                //                 addEdge();
-                //             } else if (weighted == true) {
-                //                 addEdge(currentLine[3]);
-                //             } else {
-                //                 System.err.println("There was an error adding edge.");
-                //             }
-                //             printAdjacencyMatrix();
-                //         }
-                //         if (currentLine[0].equals("deleteEdge")) {
-                //             fromIndex = getVertexIndex(currentLine[1]);
-                //             toIndex = getVertexIndex(currentLine[2]);
-                //             deleteEdge();
-                //             System.err.println("The edge from " + currentLine[1]
-                //                     + " to " + currentLine[2] + " has been deleted");
-                //             printAdjacencyMatrix();
-                //         }
-                //         if (currentLine[0].equals("addVertex")) {
-                //             addVertex(currentLine[1]);
-                //         }
-                //         if (currentLine[0].equals("deleteVertex")) {
-                //             deleteVertex(currentLine[1]);
-                //         }
-                //         if (currentLine[0].equals("isSparse")) {
-                //             if (isSparse() == true) {
-                //                 System.err.println("The graph is sparse");
-                //             } else if (isSparse() == false) {
-                //                 System.err.println("The graph is not sparse");
-                //             } else {
-                //                 System.err.println("There was an error checking if the graph is sparse");
-                //             }
-                //         }
-                //         if (currentLine[0].equals("isDense")) {
-                //             if (isDense() == true) {
-                //                 System.err.println("The graph is dense");
-                //             } else if (isDense() == false) {
-                //                 System.err.println("The graph is not dense");
-                //             } else {
-                //                 System.err.println("There was an error checking if the graph is dense");
-                //             }
-                //         }
-                //         if (currentLine[0].equals("countVertices")) {
-                //             System.err.println("There are: " + countVertices() + " Vertices");
-                //         }
-                //         if (currentLine[0].equals("countEdges")) {
-                //             System.err.println("There are: " + countEdges() + " Edges");
-                //         }
+                    		if(weighted == true){
+                    			addEdge(currentLine[3]);
+                    		}else{
+                    			addEdge();
+                    		}
+                            printAdjacencyList();
+                        }
+                        if (currentLine[0].equals("deleteEdge")) {
+                            deleteEdge(currentLine[1],currentLine[2]);
+                            printAdjacencyList();
+                        }
+                        if (currentLine[0].equals("addVertex")) {
+                            addVertex(currentLine[1]);
+                            printAdjacencyList();
+                        }
+                        // if (currentLine[0].equals("deleteVertex")) {
+                        //     deleteVertex(currentLine[1]);
+                        // }
+                        if (currentLine[0].equals("isSparse")) {
+                            if (isSparse() == true) {
+                                System.err.println("The graph is sparse");
+                            } else if (isSparse() == false) {
+                                System.err.println("The graph is not sparse");
+                            } else {
+                                System.err.println("There was an error checking if the graph is sparse");
+                            }
+                        }
+                        if (currentLine[0].equals("isDense")) {
+                            if (isDense() == true) {
+                                System.err.println("The graph is dense");
+                            } else if (isDense() == false) {
+                                System.err.println("The graph is not dense");
+                            } else {
+                                System.err.println("There was an error checking if the graph is dense");
+                            }
+                        }
+                        if (currentLine[0].equals("countVertices")) {
+                            System.err.println("There are: " + countVertices() + " Vertices");
+                        }
+                        if (currentLine[0].equals("countEdges")) {
+                            System.err.println("There are: " + countEdges() + " Edges");
+                        }
                 //         if (currentLine[0].equals("isConnected")) {
                 //             if (isConnected() == true) {
                 //                 System.err.println("The graph is connected");
@@ -190,20 +188,21 @@ public class AdjacencyList{
                 //                 System.err.println("There was an error with checking if the graph is connected");
                 //             }
                 //         }
-                //         if (currentLine[0].equals("isFullyConnected")) {
-                //             if (isFullyConnected() == true) {
-                //                 System.err.println("The graph is fully connected");
-                //             } else if (isFullyConnected() == false) {
-                //                 System.err.println("The graph is not fully connected");
-                //             } else {
-                //                 System.err.println("There was an error with checking if the graph is fully connected");
-                //             }
-                //         }
+                        if (currentLine[0].equals("isFullyConnected")) {
+                            if (isFullyConnected() == true) {
+                                System.err.println("The graph is fully connected");
+                            } else if (isFullyConnected() == false) {
+                                System.err.println("The graph is not fully connected");
+                            } else {
+                                System.err.println("There was an error with checking if the graph is fully connected");
+                            }
+                        }
                 //         if (currentLine[0].equals("printGraph")) {
                 //             printGraph(fileName);
                 //         }
                 //     }
-                // }
+                    }
+                }
             }
         }
     }
@@ -336,6 +335,78 @@ class AList<T>{
 		} 
         System.err.println();
         System.err.println("==========================");
+	}
+	public boolean checkForEdge(String from, String to){
+		Node<T> curr = new Node<>();
+		curr = head;
+		//look for from vertex
+		while(curr!=null){
+			if(curr.getVertex().equals(from)){
+				curr=curr.getNextEdge();
+				while(curr!=null){
+					if(curr.getEdge().equals(to)){
+						return true;
+					}
+					curr=curr.getNextEdge();
+				}
+				//returns false if the to vertex of edge isnt found
+				return false;
+			}
+			curr = curr.getNextVertex();
+		}
+		//returns false if the from vertex of edge isnt found
+		return false;
+	}
+	public void removeVertex(String remove){	
+		//removes the vertex from any edges
+		Node<T> vertex = new Node<>();
+		Node<T> edge = new Node<>();
+		Node<T> temp = new Node<>();
+
+		vertex=head;
+		while(vertex!=null){
+			temp = vertex;
+			edge = vertex.getNextEdge();
+
+			while(edge!=null){
+				if(edge.getEdge().equals(remove)){
+					temp.setNextEdge(edge.getNextEdge());
+				}
+				temp=temp.getNextEdge();
+				edge=edge.getNextEdge();
+			}
+			vertex=vertex.getNextVertex();
+		}
+	}
+	public void removeEdge(String from, String to){
+		Node<T> vertex = new Node<>();
+		Node<T> edge = new Node<>();
+		Node<T> temp = new Node<>();
+
+		vertex=head;
+		while(vertex!=null){
+			if(vertex.getVertex().equals(from)){
+				edge=vertex.getNextEdge();
+				while(edge!=null){
+					if(edge.getNextEdge().getEdge().equals(to)){
+						temp=edge.getNextEdge();
+						edge.setNextEdge(temp.getNextEdge());
+					}
+					edge=edge.getNextEdge();
+				}
+			}
+			if(vertex.getVertex().equals(to)){
+				edge=vertex.getNextEdge();
+				while(edge!=null){
+					temp=edge.getNextEdge();
+					if(temp!=null&&temp.equals(from)){
+						edge.setNextEdge(temp.getNextEdge());
+					}
+					edge=edge.getNextEdge();
+				}
+			}
+			vertex=vertex.getNextVertex();
+		}
 	}
 }
 }
