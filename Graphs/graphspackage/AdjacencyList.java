@@ -40,8 +40,8 @@ public class AdjacencyList{
 		numOfVertices++;
 	}
 	public void deleteVertex(String vertex){
-		// aL.removeVertex(vertex);
-		// numOfVertices--
+		aL.removeVertex(vertex);
+		numOfVertices--;
 	}
 	public boolean isSparse(){
 		int maxEdges = ((numOfVertices * (numOfVertices - 1)) / 2);
@@ -57,8 +57,8 @@ public class AdjacencyList{
 	public int countEdges(){
 		return numberOfEdges;
 	}
-	public void isConnected(){
-		
+	public boolean isConnected(){
+		return true;		
 	}
 	public boolean isFullyConnected(){
 		int maxEdges = ((numOfVertices * (numOfVertices - 1)) / 2);
@@ -152,9 +152,10 @@ public class AdjacencyList{
                             addVertex(currentLine[1]);
                             printAdjacencyList();
                         }
-                        // if (currentLine[0].equals("deleteVertex")) {
-                        //     deleteVertex(currentLine[1]);
-                        // }
+                        if (currentLine[0].equals("deleteVertex")) {
+                            deleteVertex(currentLine[1]);
+                            printAdjacencyList();
+                        }
                         if (currentLine[0].equals("isSparse")) {
                             if (isSparse() == true) {
                                 System.err.println("The graph is sparse");
@@ -179,15 +180,15 @@ public class AdjacencyList{
                         if (currentLine[0].equals("countEdges")) {
                             System.err.println("There are: " + countEdges() + " Edges");
                         }
-                //         if (currentLine[0].equals("isConnected")) {
-                //             if (isConnected() == true) {
-                //                 System.err.println("The graph is connected");
-                //             } else if (isConnected() == false) {
-                //                 System.err.println("The graph is not connected");
-                //             } else {
-                //                 System.err.println("There was an error with checking if the graph is connected");
-                //             }
-                //         }
+                        if (currentLine[0].equals("isConnected")) {
+                            if (isConnected() == true) {
+                                System.err.println("The graph is connected");
+                            } else if (isConnected() == false) {
+                                System.err.println("The graph is not connected");
+                            } else {
+                                System.err.println("There was an error with checking if the graph is connected");
+                            }
+                        }
                         if (currentLine[0].equals("isFullyConnected")) {
                             if (isFullyConnected() == true) {
                                 System.err.println("The graph is fully connected");
@@ -197,21 +198,19 @@ public class AdjacencyList{
                                 System.err.println("There was an error with checking if the graph is fully connected");
                             }
                         }
-                //         if (currentLine[0].equals("printGraph")) {
-                //             printGraph(fileName);
-                //         }
-                //     }
+                        if (currentLine[0].equals("printGraph")) {
+                            printGraph(fileName,weighted,directed);
+                        }
                     }
                 }
             }
         }
     }
- //        printGraph(fileName);
-	// }
-	// public static void printGraph(){
-		
-	// }
-}
+        printGraph(fileName,weighted,directed);
+	}
+	public void printGraph(String fileName, boolean weighted, boolean directed)throws IOException{
+		aL.outputGraph(fileName,weighted,directed);
+	}
 
 class AList<T>{
 	public class Node<T>{
@@ -357,56 +356,123 @@ class AList<T>{
 		//returns false if the from vertex of edge isnt found
 		return false;
 	}
-	public void removeVertex(String remove){	
-		//removes the vertex from any edges
-		Node<T> vertex = new Node<>();
-		Node<T> edge = new Node<>();
+	public void removeVertex(String remove){
+		Node<T> currentEdge = new Node<>();
 		Node<T> temp = new Node<>();
 
-		vertex=head;
-		while(vertex!=null){
-			temp = vertex;
-			edge = vertex.getNextEdge();
+		Node<T> curr = new Node<>();
+		Node<T> prev = new Node<>();
 
-			while(edge!=null){
-				if(edge.getEdge().equals(remove)){
-					temp.setNextEdge(edge.getNextEdge());
+		curr=head;
+		//remove the given vertex
+		if(curr.getVertex().equals(remove)){
+			head = curr.getNextVertex();
+		}else{
+			while(curr!=null){
+				prev=curr;
+				curr=curr.getNextVertex();
+				if(curr!=null&&curr.getVertex().equals(remove)){
+					prev.setNextVertex(curr.getNextVertex());
 				}
-				temp=temp.getNextEdge();
-				edge=edge.getNextEdge();
 			}
-			vertex=vertex.getNextVertex();
 		}
+
+		curr=head;
+		//removes the vertex from any edges
+		while(curr != null){
+			if(curr.getNextEdge() != null){
+				prev = curr;
+				currentEdge = curr.getNextEdge();
+				while(currentEdge != null){
+					if(currentEdge.getEdge().equals(remove)){
+						prev.setNextEdge(currentEdge.getNextEdge());
+					}
+					prev = prev.getNextEdge();
+					currentEdge = currentEdge.getNextEdge();
+				}
+			}
+			curr = curr.nextVertex;
+		} 
 	}
 	public void removeEdge(String from, String to){
-		Node<T> vertex = new Node<>();
-		Node<T> edge = new Node<>();
+		Node<T> currentVertex = new Node<>();
+		Node<T> currentEdge = new Node<>();
 		Node<T> temp = new Node<>();
+		currentVertex = head;
 
-		vertex=head;
-		while(vertex!=null){
-			if(vertex.getVertex().equals(from)){
-				edge=vertex.getNextEdge();
-				while(edge!=null){
-					if(edge.getNextEdge().getEdge().equals(to)){
-						temp=edge.getNextEdge();
-						edge.setNextEdge(temp.getNextEdge());
+		while(currentVertex != null){
+			if(currentVertex.getVertex().equals(from)){
+				temp = currentVertex;
+				currentEdge = currentVertex.getNextEdge();
+				while(currentEdge != null){
+					if(currentEdge.getEdge().equals(to)){
+						temp.setNextEdge(currentEdge.getNextEdge());
 					}
-					edge=edge.getNextEdge();
+					temp = temp.getNextEdge();
+					currentEdge = currentEdge.getNextEdge();
 				}
 			}
-			if(vertex.getVertex().equals(to)){
-				edge=vertex.getNextEdge();
-				while(edge!=null){
-					temp=edge.getNextEdge();
-					if(temp!=null&&temp.equals(from)){
-						edge.setNextEdge(temp.getNextEdge());
+			if(currentVertex.getVertex().equals(to)){
+				temp = currentVertex;
+				currentEdge = currentVertex.getNextEdge();
+				while(currentEdge != null){
+					if(currentEdge.getEdge().equals(from)){
+						temp.setNextEdge(currentEdge.getNextEdge());
 					}
-					edge=edge.getNextEdge();
+					temp = temp.getNextEdge();
+					currentEdge = currentEdge.getNextEdge();
 				}
 			}
-			vertex=vertex.getNextVertex();
-		}
+			currentVertex = currentVertex.nextVertex;
+		} 
 	}
+	    public void outputGraph(String fileName, boolean weighted, boolean directed) throws IOException {
+        String OUTPUTFILE = fileName.replace(".txt", ".log");
+        FileWriter fileWriter = new FileWriter(OUTPUTFILE);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+    
+    //here is the output to be in file
+        //prints if graph is weighted
+        if (weighted == true) {
+            printWriter.println("weighted");
+        } else if (weighted == false) {
+            printWriter.println("unweighted");
+        }
+        //prints if graph is directed
+        if (directed == true) {
+            printWriter.println("directed");
+        } else if (directed == false) {
+            printWriter.println("undirected");
+        }
+        printWriter.println("begin");
+        //prints out the vertices
+        Node<T> curr = new Node<>();
+        curr=head;
+        while(curr!=null){
+        	printWriter.print(curr.getVertex()+" ");
+        	curr=curr.getNextVertex();
+        }
+        //prints out the edges and value if weighted
+        Node<T> edge = new Node<>();
+        curr=head;
+        while(curr!=null){
+        	edge=curr.getNextEdge();
+        	while(edge!=null){
+        		printWriter.print(curr.getVertex()+" ");
+        		printWriter.print(edge.getEdge());
+        		if(weighted=true){
+        			printWriter.print(" "+edge.getWeight());
+        		}
+        		edge=edge.getNextEdge();
+        	}
+        	curr=curr.getNextVertex();
+        }
+        printWriter.println();
+        printWriter.println("end");
+
+    //end of our output
+
+        printWriter.close();
+    }
 }
 }
