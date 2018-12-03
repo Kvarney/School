@@ -1,0 +1,5 @@
+weighted
+undirected
+begin
+A B C D E F G H I J K L M N O P Q A B 1.0B C 1.0B A 1.0C D 1.0C B 1.0D E 1.0D C 1.0E F 6.0E D 1.0F G 2.0F E 6.0G H 2.0G F 2.0H I 6.0H G 2.0I J 1.0I H 6.0J K 1.0J I 1.0K L 1.0K J 1.0L M 1.0L K 1.0M L 1.0N Q 3.0N P 3.0N O 3.0O N 3.0P N 3.0Q N 3.0
+end

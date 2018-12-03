@@ -1,6 +1,6 @@
 ::compiling all files in project
-javac ./graphspackage/*.java
 javac Graphs.java
+javac ./graphspackage/*.java
 
 ::run project
 java Graphs

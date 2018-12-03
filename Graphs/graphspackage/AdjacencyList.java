@@ -6,12 +6,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.*;
 
 public class AdjacencyList{
 	AList<String> aL = new AList<String>();
     private boolean weighted = false;
     private boolean directed = false;
-    private int numOfVertices;
+    private int numOfVertices = 0;
     private int numberOfEdges = 0;
     private String fromVertex = "n";
     private String toVertex = "n";
@@ -58,7 +59,7 @@ public class AdjacencyList{
 		return numberOfEdges;
 	}
 	public boolean isConnected(){
-		return true;		
+		return checkForConnection(numOfVertices);	
 	}
 	public boolean isFullyConnected(){
 		int maxEdges = ((numOfVertices * (numOfVertices - 1)) / 2);
@@ -473,6 +474,42 @@ class AList<T>{
     //end of our output
 
         printWriter.close();
+    }
+    public boolean checkForConnection(int numOfVertices){
+    	Node<T> currentVertex = new Node<>();
+    	Node<T> currentEdge = new Node<>();
+
+    	List<T> willVisit = new ArrayList<T>();
+    	List<T> visited = new ArrayList<T>();
+
+    	willVisit.add(head.getVertex());    	
+
+    	while(currentVertex!=null&&!willVisit.isEmpty()){
+    		currentVertex=getVertexNode(willVisit.get(0));
+    		visited.add(currentVertex.getVertex());
+    		currentEdge=currentVertex.getNextEdge();
+    		//gets all vertices that the current vertex reaches with edges and 	
+    		//adds them to the will visit list.
+    		while(currentEdge!=null){
+    			if(willVisit.contains(currentEdge.getEdge())){
+    				willVisit.add(currentEdge.getEdge());
+    			}
+    			currentEdge=currentEdge.getNextEdge();
+    		}
+    	}
+    	return(visited.size()==numOfVertices);
+    }
+
+    //assumes that the vertex node we are trying to get exists we just need the node
+    public Node<T> getVertexNode(String vertexToGet){
+    	Node<T> curr = new Node<>();
+    	curr=head;
+    	while(curr!=null){
+    		if(curr.getVertex().equals(vertexToGet)){
+    			return curr;
+    		}
+    		curr=curr.getNextVertex();
+    	}
     }
 }
 }

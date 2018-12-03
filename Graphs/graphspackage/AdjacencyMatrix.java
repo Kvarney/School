@@ -12,12 +12,12 @@ public class AdjacencyMatrix{
     public static String[][] adjacencyMatrix = new String[INITIAL_SIZE][INITIAL_SIZE];
     private static boolean weighted = false;
     private static boolean directed = false;
-    private static int numOfVertices;
+    private static int numOfVertices = 0;
     private static int toIndex = 0;
     private static int fromIndex = 0;
     private static int numberOfEdges = 0;
 
-    public AdjacencyMatrix(String fileName) throws IOException {
+    public AdjacencyMatrix(final String fileName) throws IOException {
         readGraph(fileName);
     }
 
@@ -358,9 +358,9 @@ public class AdjacencyMatrix{
 
     public static void printAdjacencyMatrix() {
         System.err.print("==========================");
-        for (int from = 0; from < numOfVertices + 1; from++) {
+        for (int from = 0; from < numOfVertices; from++) {
             System.err.println();
-            for (int to = 0; to < numOfVertices + 1; to++) {
+            for (int to = 0; to < numOfVertices; to++) {
                 System.err.print(adjacencyMatrix[from][to] + " ");
             }
         }
