@@ -112,13 +112,30 @@ public class AdjacencyMatrix{
         return(numberOfEdges>=(maxEdges*0.85));
     }
     public static boolean isConnected() {
-        return true;
+        String[] connected=new String[numOfVertices];
+        int visited=0;
+        int willVisit=1;
+        int connectedIndex=0;
+        int fromVertex=0;
+        String toVertex="n";
+        connected[visited]=adjacencyMatrix[0][1];
+        while(willVisit!=0){
+            willVisit--;
+            fromVertex=getVertexIndex(connected[visited]);
+            for(int j=1;j<=numOfVertices;j++){
+                if(!(adjacencyMatrix[j][fromVertex].equals("F"))){
+                    toVertex=adjacencyMatrix[j][0];
+                    if(!contains(connected,toVertex,connectedIndex)){
+                        connected[connectedIndex+1]=toVertex;
+                        connectedIndex++;
+                        willVisit++;
+                    }
+                }
+            }
+            visited++;
+        }
+        return (visited==numOfVertices);
     }
-
-
-
-
-
     public static boolean isFullyConnected(){
     	int maxEdges=((numOfVertices*(numOfVertices-1))/2);
     	return(numberOfEdges==maxEdges);
@@ -299,9 +316,19 @@ public class AdjacencyMatrix{
         for(int i=1;i<numOfVertices+1;i++){
             if(vertex.equals(adjacencyMatrix[0][i])){
                 index=i;
+                return index;
             }
         }
         return index;
+    }
+    public static boolean contains(String[] str,String element,int index){
+        boolean contains=false;
+        for(int i=0;i<=index;i++){
+            if(str[i]!=null&&str[i].equals(element)){
+                return true;
+            }
+        }
+        return contains;
     }
     public static void printAdjacencyMatrix(){
         System.err.print("==========================");
