@@ -138,7 +138,7 @@ public class AdjacencyList{
 							fromVertex = currentLine[1];
                     		toVertex = currentLine[2];
 
-                    		if(weighted == true){
+                    		if(weighted){
                     			addEdge(currentLine[3]);
                     		}else{
                     			addEdge();

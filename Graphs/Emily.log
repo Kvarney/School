@@ -1,5 +1,35 @@
 weighted
 undirected
 begin
-A B C D E F G H I J K L M N O P Q A B 1.0B C 1.0B A 1.0C D 1.0C B 1.0D E 1.0D C 1.0E F 6.0E D 1.0F G 2.0F E 6.0G H 2.0G F 2.0H I 6.0H G 2.0I J 1.0I H 6.0J K 1.0J I 1.0K L 1.0K J 1.0L M 1.0L K 1.0M L 1.0N Q 3.0N P 3.0N O 3.0O N 3.0P N 3.0Q N 3.0
+A B C D E F G H I J K L M N O P Q 
+A B 1 
+B A 1 
+B C 1 
+C B 1 
+C D 1 
+D C 1 
+D E 1 
+E D 1 
+E F 6 
+F E 6 
+F G 2 
+G F 2 
+G H 2 
+H G 2 
+H I 6 
+I H 6 
+I J 1 
+J I 1 
+J K 1 
+K J 1 
+K L 1 
+L K 1 
+L M 1 
+M L 1 
+N O 3 
+N P 3 
+N Q 3 
+O N 3 
+P N 3 
+Q N 3 
 end

@@ -8,18 +8,18 @@ weighted
 undirected
 begin
 A B C D E F G H I J K L M
-A B 1.0
-B C 1.0
-C D 1.0
-D E 1.0
-E F 6.0
-F G 2.0
-G H 2.0
-H I 6.0
-I J 1.0
-J K 1.0
-K L 1.0
-L M 1.0
+A B 1
+B C 1
+C D 1
+D E 1
+E F 6
+F G 2
+G H 2
+H I 6
+I J 1
+J K 1
+K L 1
+L M 1
 end
 isConnected
 True
@@ -31,11 +31,11 @@ addVertex P
 True
 addVertex Q
 True
-addEdge N O 3.0
+addEdge N O 3
 True
-addEdge N P 3.0
+addEdge N P 3
 True
-addEdge N Q 3.0
+addEdge N Q 3
 True
 isConnected
 False

@@ -14,7 +14,7 @@ hasEdge B Q
 false
 addEdge B C 5.2
 isSparse
-true
+false
 deleteEdge C F
 true
 isDense
