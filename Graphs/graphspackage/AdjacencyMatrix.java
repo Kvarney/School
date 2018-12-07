@@ -147,8 +147,8 @@ public class AdjacencyMatrix{
         return numberOfEdges;
     }
     public static void readGraph(String fileName) throws FileNotFoundException, IOException {
-        FileReader fr = new FileReader("./Tests/" + fileName);
-        BufferedReader br = new BufferedReader(fr);
+        FileReader fr=new FileReader("./Tests/"+fileName);
+        BufferedReader br=new BufferedReader(fr);
         String[] currentLine;
         String line;
         //Assumptions that we will not run into any empty lines during this portion of code

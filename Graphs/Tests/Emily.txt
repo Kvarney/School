@@ -39,3 +39,4 @@ addEdge N Q 3
 True
 isConnected
 False
+countEdges

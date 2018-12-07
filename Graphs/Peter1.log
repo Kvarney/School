@@ -1,17 +1,5 @@
 unweighted
 directed
 begin
-F A C E 
-F A
-F C
-F E
-A F
-A C
-A E
-C F
-C A
-C E
-E F
-E A
-E C
+F A C E F E n/aF C n/aF A n/aA E n/aA C n/aA F n/aA C n/aC A n/aC F n/aC E n/aE C n/aE A n/aE F n/a
 end
