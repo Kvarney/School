@@ -10,12 +10,12 @@ import java.util.*;
 
 public class AdjacencyList{
 	AList<String> aL = new AList<String>();
-    private boolean weighted = false;
-    private boolean directed = false;
-    private int numOfVertices = 0;
-    private int numberOfEdges = 0;
-    private String fromVertex = "n";
-    private String toVertex = "n";
+    public boolean weighted = false;
+    public boolean directed = false;
+    public int numOfVertices = 0;
+    public int numberOfEdges = 0;
+    public String fromVertex = "n";
+    public String toVertex = "n";
 
 	public AdjacencyList(String fileName) throws IOException{
 		readGraph(fileName);
@@ -429,8 +429,8 @@ class AList<T>{
 		} 
 	}
 	    public void outputGraph(String fileName, boolean weighted, boolean directed) throws IOException {
-        String OUTPUTFILE = fileName.replace(".txt", ".log");
-        FileWriter fileWriter = new FileWriter(OUTPUTFILE);
+        String OUTPUTFILE = fileName.replace(".txt", "(AL).log");
+        FileWriter fileWriter = new FileWriter("./logs/"+OUTPUTFILE);
         PrintWriter printWriter = new PrintWriter(fileWriter);
     
     //here is the output to be in file
@@ -454,16 +454,17 @@ class AList<T>{
         	printWriter.print(curr.getVertex()+" ");
         	curr=curr.getNextVertex();
         }
+        printWriter.println();
         //prints out the edges and value if weighted
         Node<T> edge = new Node<>();
         curr=head;
         while(curr!=null){
         	edge=curr.getNextEdge();
         	while(edge!=null){
-        		printWriter.print(curr.getVertex()+" ");
-        		printWriter.print(edge.getEdge());
         		if(weighted=true){
-        			printWriter.print(" "+edge.getWeight());
+        			printWriter.println(curr.getVertex()+" "+edge.getEdge()+" "+edge.getWeight());
+        		}else{
+        			printWriter.println(curr.getVertex()+" "+edge.getEdge());
         		}
         		edge=edge.getNextEdge();
         	}

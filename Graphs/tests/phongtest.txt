@@ -1,0 +1,25 @@
+*comment
+weighted
+undirected
+begin
+A B C D E F
+A B 2.0
+A B 2.0
+end
+hasEdge A B
+hasEdge A C
+hasEdge B A
+addEdge A B 1.0
+addEdge B C 3.0
+countVertices
+countEdges
+deleteEdge A C
+deleteEdge A B
+countEdges
+isSparse
+isDense
+isFullyConnected
+addVertex A
+addVertex G
+deleteVertex B
+readGraph

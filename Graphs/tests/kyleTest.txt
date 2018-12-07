@@ -1,0 +1,27 @@
+* Graphs test file by K. Varney
+* File: kyleTest.txt
+* This test file is built off of the judy1.txt test file.
+* File tests all
+weighted
+undirected
+begin
+A F B C D
+A B 2.3
+C F 1.0
+A D 6.2
+end
+hasEdge A B
+false
+addEdge B C 5.2
+isSparse
+false
+deleteEdge C F
+true
+isDense
+false			
+isFullyConnected
+addVertex Z
+deleteEdge A B
+deleteVertex B
+deleteVertex A
+false

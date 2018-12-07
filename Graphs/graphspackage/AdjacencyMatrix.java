@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class AdjacencyMatrix{
-    private static boolean weighted=false;
-    private static boolean directed=false;
-    private static int numOfVertices=0;
+    public static boolean weighted=false;
+    public static boolean directed=false;
+    public static int numOfVertices=0;
     public static String[][] adjacencyMatrix=new String[2][2];
-    private static int toIndex=0;
-    private static int fromIndex=0;
-    private static int numberOfEdges=0;
+    public static int toIndex=0;
+    public static int fromIndex=0;
+    public static int numberOfEdges=0;
 
     public AdjacencyMatrix(final String fileName)throws IOException{
         readGraph(fileName);
@@ -101,7 +101,7 @@ public class AdjacencyMatrix{
     public static boolean hasEdge(String from,String to) {
         fromIndex=getVertexIndex(from);
         toIndex=getVertexIndex(to);
-        return !(adjacencyMatrix[fromIndex][toIndex]).equals("F");
+        return !((adjacencyMatrix[fromIndex][toIndex]).equals("F"));
     }
     public static boolean isSparse(){
         int maxEdges=((numOfVertices*(numOfVertices-1))/2);
@@ -270,8 +270,8 @@ public class AdjacencyMatrix{
         printGraph(fileName);
     }
     public static void printGraph(String fileName)throws IOException{
-        String OUTPUTFILE=fileName.replace(".txt",".log");
-        FileWriter fileWriter=new FileWriter(OUTPUTFILE);
+        String OUTPUTFILE=fileName.replace(".txt","(AM).log");
+        FileWriter fileWriter=new FileWriter("./logs/"+OUTPUTFILE);
         PrintWriter printWriter=new PrintWriter(fileWriter);
         //Prints if graph is weighted
         if(weighted){
