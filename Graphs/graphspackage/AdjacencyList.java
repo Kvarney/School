@@ -10,12 +10,12 @@ import java.util.*;
 
 public class AdjacencyList{
 	AList<String> aL = new AList<String>();
-    private boolean weighted = false;
-    private boolean directed = false;
-    private int numOfVertices = 0;
-    private int numberOfEdges = 0;
-    private String fromVertex = "n";
-    private String toVertex = "n";
+    public boolean weighted = false;
+    public boolean directed = false;
+    public int numOfVertices = 0;
+    public int numberOfEdges = 0;
+    public String fromVertex = "n";
+    public String toVertex = "n";
 
 	public AdjacencyList(String fileName) throws IOException{
 		readGraph(fileName);
@@ -59,7 +59,8 @@ public class AdjacencyList{
 		return numberOfEdges;
 	}
 	public boolean isConnected(){
-		return checkForConnection(numOfVertices);	
+
+		return aL.checkForConnection(numOfVertices);	
 	}
 	public boolean isFullyConnected(){
 		int maxEdges = ((numOfVertices * (numOfVertices - 1)) / 2);
@@ -182,7 +183,7 @@ public class AdjacencyList{
                             System.err.println("There are: " + countEdges() + " Edges");
                         }
                         if (currentLine[0].equals("isConnected")) {
-                            if (isConnected() == true) {
+                            if (isConnected()) {
                                 System.err.println("The graph is connected");
                             } else if (isConnected() == false) {
                                 System.err.println("The graph is not connected");
@@ -428,8 +429,8 @@ class AList<T>{
 		} 
 	}
 	    public void outputGraph(String fileName, boolean weighted, boolean directed) throws IOException {
-        String OUTPUTFILE = fileName.replace(".txt", ".log");
-        FileWriter fileWriter = new FileWriter(OUTPUTFILE);
+        String OUTPUTFILE = fileName.replace(".txt", "(AL).log");
+        FileWriter fileWriter = new FileWriter("./logs/"+OUTPUTFILE);
         PrintWriter printWriter = new PrintWriter(fileWriter);
     
     //here is the output to be in file
@@ -453,16 +454,17 @@ class AList<T>{
         	printWriter.print(curr.getVertex()+" ");
         	curr=curr.getNextVertex();
         }
+        printWriter.println();
         //prints out the edges and value if weighted
         Node<T> edge = new Node<>();
         curr=head;
         while(curr!=null){
         	edge=curr.getNextEdge();
         	while(edge!=null){
-        		printWriter.print(curr.getVertex()+" ");
-        		printWriter.print(edge.getEdge());
         		if(weighted=true){
-        			printWriter.print(" "+edge.getWeight());
+        			printWriter.println(curr.getVertex()+" "+edge.getEdge()+" "+edge.getWeight());
+        		}else{
+        			printWriter.println(curr.getVertex()+" "+edge.getEdge());
         		}
         		edge=edge.getNextEdge();
         	}
@@ -476,32 +478,51 @@ class AList<T>{
         printWriter.close();
     }
     public boolean checkForConnection(int numOfVertices){
-    	Node<T> currentVertex = new Node<>();
-    	Node<T> currentEdge = new Node<>();
+    	String[] connected=new String[numOfVertices/2];
 
-    	List<T> willVisit = new ArrayList<T>();
-    	List<T> visited = new ArrayList<T>();
+    	int visited=0;
+    	int willVisit=1;
+    	int connectedIndex=0;
+    	//fromVertex
+    	//toVertex
+    	T vertex;
+    	Node<T> fromVertex=new Node<>();
+    	Node<T> toVertex=new Node<>();
 
-    	willVisit.add(head.getVertex());    	
+    	vertex=head.getVertex();
+    	connected[visited]=(String)vertex;
 
-    	while(currentVertex!=null&&!willVisit.isEmpty()){
-    		currentVertex=getVertexNode(willVisit.get(0));
-    		visited.add(currentVertex.getVertex());
-    		currentEdge=currentVertex.getNextEdge();
-    		//gets all vertices that the current vertex reaches with edges and 	
-    		//adds them to the will visit list.
-    		while(currentEdge!=null){
-    			if(willVisit.contains(currentEdge.getEdge())){
-    				willVisit.add(currentEdge.getEdge());
+    	while(willVisit!=0){
+            willVisit--;
+    		//gets the vertex node of element from connected to traverse
+    		fromVertex=getVertexNode((T)connected[visited]);
+    		toVertex=fromVertex.getNextEdge();
+    		while(toVertex!=null){
+    			vertex=toVertex.getEdge();
+    			if(!contains(connected,vertex,connectedIndex)){
+    				connected[connectedIndex+1]=(String)vertex;
+    				connectedIndex++;
+    				willVisit++;
     			}
-    			currentEdge=currentEdge.getNextEdge();
+    			toVertex=toVertex.getNextEdge();
     		}
+                visited++;
     	}
-    	return(visited.size()==numOfVertices);
+        return(visited==(numOfVertices/2));
+    }
+
+    public boolean contains(String[] str,T element,int index){
+        boolean contains=false;
+        for(int i=0;i<=index;i++){
+            if(str[i]!=null&&str[i].equals(element)){
+                return true;
+            }
+        }
+        return contains;
     }
 
     //assumes that the vertex node we are trying to get exists we just need the node
-    public Node<T> getVertexNode(String vertexToGet){
+    public Node<T> getVertexNode(T vertexToGet){
     	Node<T> curr = new Node<>();
     	curr=head;
     	while(curr!=null){
@@ -510,6 +531,7 @@ class AList<T>{
     		}
     		curr=curr.getNextVertex();
     	}
+        return curr;
     }
 }
 }
